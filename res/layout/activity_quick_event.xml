@@ -1,0 +1,131 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#990033"
+    tools:context=".QuickEvent" >
+
+    <TextView
+        android:id="@+id/quickEventTitleLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="@string/quickEventTitle"
+        android:textSize="20sp" />
+
+    <EditText
+        android:id="@+id/quickEventTitleInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/quickEventTitleLabel"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:ems="10"
+        android:inputType="text" >
+
+        <requestFocus />
+    </EditText>
+
+    <TextView
+        android:id="@+id/quickEventTimeLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/quickEventTitleInput"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="15dp"
+        android:text="@string/quickEventTime"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/quickEventTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/quickEventTimeLabel"
+        android:layout_alignBottom="@+id/quickEventTimeLabel"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@+id/quickEventTimeLabel"
+        android:text="@string/blank"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/quickEventTimeSet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/quickEventTitleInput"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
+        android:onClick="setQuickEventTime"
+        android:text="@string/set" />
+
+    <TextView
+        android:id="@+id/quickEventTypeLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/quickEventTimeSet"
+        android:layout_marginTop="15dp"
+        android:layout_toLeftOf="@+id/quickEventTime"
+        android:text="@string/quickEventType"
+        android:textSize="20sp" />
+
+    <RadioGroup
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_alignTop="@+id/quickEventTypeLabel"
+        android:layout_alignLeft="@+id/quickEventTime"
+	    android:orientation="vertical">
+        
+	    <RadioButton
+	        android:id="@+id/quickEventFoodRadioButton"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/quickEventFood"
+	        android:onClick="onRadioButtonClicked" />
+	
+	    <RadioButton
+	        android:id="@+id/quickEventBroHoodRadioButton"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/quickEventBroHood"
+	        android:onClick="onRadioButtonClicked" />
+	
+	    <RadioButton
+	        android:id="@+id/quickEventSportsRadioButton"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/quickEventSports"
+	        android:onClick="onRadioButtonClicked" />
+	
+	    <RadioButton
+	        android:id="@+id/quickEventOtherRadioButton"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/quickEventOther"
+	        android:onClick="onRadioButtonClicked" />
+
+   </RadioGroup>
+
+    <Button
+        android:id="@+id/quickEventNotifyButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/quickEventCancelButton"
+        android:layout_alignBottom="@+id/quickEventCancelButton"
+        android:layout_toRightOf="@+id/quickEventCancelButton"
+        android:text="@string/quickEventNotify"
+        android:onClick="notifyOthers" />
+
+    <Button
+        android:id="@+id/quickEventCancelButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/quickEventTitleInput"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="30dp"
+        android:text="@string/cancel"
+        android:onClick="backToMenu" />
+
+</RelativeLayout>
