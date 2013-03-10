@@ -22,5 +22,16 @@
     <string name="quickEventNotify">Notify Others</string>
     <string name="cancel">Cancel</string>
     <string name="areYouSure">Are you sure?</string>
+    <string name="manageNotifications">Notification Settings</string>
+    <string name="update">Update</string>
+    <string-array name="notificationSettings">
+        <item>Food</item>
+        <item>Brotherhood</item>
+        <item>Sports</item>
+        <item>Other</item>
+    </string-array>
+    <string name="parseSetupTitleBar">Push Notification Setup</string>
+    <string name="parseSignUpMessage">In order to receive push notifications, you\'ll need a Parse account.</string>
+    <string name="logOut">Log Out</string>
 
 </resources>

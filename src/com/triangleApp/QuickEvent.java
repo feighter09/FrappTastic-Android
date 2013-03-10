@@ -1,5 +1,7 @@
 package com.triangleApp;
 
+import com.parse.Parse;
+import com.triangleApp.popUps.NotificationSettingsDialog;
 import com.triangleApp.popUps.QuickEventDialog;
 import com.triangleApp.popUps.TimePickerFragment;
 import com.triangleApp.util.QuickEventRadioButtons;
@@ -35,6 +37,11 @@ public class QuickEvent extends FragmentActivity {
 	public void setQuickEventTime(View v){
 		DialogFragment timePicker = new TimePickerFragment();
 		timePicker.show(getFragmentManager(), "timePicker");
+	}
+	
+	public void notificationSettings(View v){
+		DialogFragment notificationSettings = new NotificationSettingsDialog();
+		notificationSettings.show(getFragmentManager(), "notificationSettings");
 	}
 	
 	public void notifyOthers(View v){

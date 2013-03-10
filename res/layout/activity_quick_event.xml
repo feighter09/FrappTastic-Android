@@ -72,41 +72,41 @@
         android:textSize="20sp" />
 
     <RadioGroup
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    android:layout_alignTop="@+id/quickEventTypeLabel"
+        android:id="@+id/radioGroup1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/quickEventTime"
-	    android:orientation="vertical">
-        
-	    <RadioButton
-	        android:id="@+id/quickEventFoodRadioButton"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="@string/quickEventFood"
-	        android:onClick="onRadioButtonClicked" />
-	
-	    <RadioButton
-	        android:id="@+id/quickEventBroHoodRadioButton"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="@string/quickEventBroHood"
-	        android:onClick="onRadioButtonClicked" />
-	
-	    <RadioButton
-	        android:id="@+id/quickEventSportsRadioButton"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="@string/quickEventSports"
-	        android:onClick="onRadioButtonClicked" />
-	
-	    <RadioButton
-	        android:id="@+id/quickEventOtherRadioButton"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="@string/quickEventOther"
-	        android:onClick="onRadioButtonClicked" />
+        android:layout_alignTop="@+id/quickEventTypeLabel"
+        android:orientation="vertical" >
 
-   </RadioGroup>
+        <RadioButton
+            android:id="@+id/quickEventFoodRadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onRadioButtonClicked"
+            android:text="@string/quickEventFood" />
+
+        <RadioButton
+            android:id="@+id/quickEventBroHoodRadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onRadioButtonClicked"
+            android:text="@string/quickEventBroHood" />
+
+        <RadioButton
+            android:id="@+id/quickEventSportsRadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onRadioButtonClicked"
+            android:text="@string/quickEventSports" />
+
+        <RadioButton
+            android:id="@+id/quickEventOtherRadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onRadioButtonClicked"
+            android:text="@string/quickEventOther" />
+    </RadioGroup>
 
     <Button
         android:id="@+id/quickEventNotifyButton"
@@ -115,8 +115,8 @@
         android:layout_alignBaseline="@+id/quickEventCancelButton"
         android:layout_alignBottom="@+id/quickEventCancelButton"
         android:layout_toRightOf="@+id/quickEventCancelButton"
-        android:text="@string/quickEventNotify"
-        android:onClick="notifyOthers" />
+        android:onClick="notifyOthers"
+        android:text="@string/quickEventNotify" />
 
     <Button
         android:id="@+id/quickEventCancelButton"
@@ -125,7 +125,17 @@
         android:layout_alignLeft="@+id/quickEventTitleInput"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="30dp"
-        android:text="@string/cancel"
-        android:onClick="backToMenu" />
+        android:onClick="backToMenu"
+        android:text="@string/cancel" />
+
+    <Button
+        android:id="@+id/manageNotificationsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_alignLeft="@+id/radioGroup1"
+        android:layout_below="@+id/radioGroup1"
+        android:text="@string/manageNotifications"
+        android:textSize="10sp"
+        android:onClick="notificationSettings" />
 
 </RelativeLayout>

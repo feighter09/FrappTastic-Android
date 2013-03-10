@@ -1,6 +1,7 @@
 package com.triangleApp;
 
 import com.triangleApp.R;
+import com.triangleApp.util.PreferenceData;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -30,6 +31,12 @@ public class MainMenu extends Activity {
 	
 	public void showQuickEvent(View v){
 		Intent intent = new Intent(this, QuickEvent.class);
+		startActivity(intent);
+	}
+	
+	public void logOut(View v){
+		PreferenceData.clearLoggedInUniqname(this);
+		Intent intent = new Intent(this, Login.class);
 		startActivity(intent);
 	}
 

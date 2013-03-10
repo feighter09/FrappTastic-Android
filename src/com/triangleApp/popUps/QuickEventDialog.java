@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import com.parse.*;
 import com.triangleApp.R;
 
 public class QuickEventDialog extends DialogFragment {
@@ -15,15 +16,19 @@ public class QuickEventDialog extends DialogFragment {
 	
 	@Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-    	String message = "Send " + eventType + " event: \"" + eventTitle + "\" at " + eventTime + "?";
+    	String dialogMessage = "Send " + eventType + " event: \"" + eventTitle + "\" at " + eventTime + "?";
+    	final String pushMessage = "New " + eventType + " event: \"" + eventTitle + "\" at " + eventTime; 
     	
         // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(R.string.areYouSure)
-        	   .setMessage(message)
+        	   .setMessage(dialogMessage)
                .setPositiveButton(R.string.quickEventNotify, new DialogInterface.OnClickListener() {
                    public void onClick(DialogInterface dialog, int id) {
-                       // FIRE ZE MISSILES!
+                       ParsePush push = new ParsePush();
+                       push.setChannel(eventType);
+                       push.setMessage(pushMessage);
+                       push.sendInBackground();
                    }
                })
                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
