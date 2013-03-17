@@ -42,7 +42,6 @@ public class Login extends Activity {
 
 	private EditText uniqnameInput, passwordInput;
 	private Button submit;
-	private ProgressBar loading;
 	
 	private Context ctx;
 	
@@ -59,12 +58,9 @@ public class Login extends Activity {
 		uniqnameInput = (EditText) findViewById(R.id.uniqnameInput);
 		passwordInput = (EditText) findViewById(R.id.passwordInput);
 		submit = (Button) findViewById(R.id.sign_in_button);
-		//loading = (ProgressBar) findViewById(R.id.progressBar1);
 		
 		mLoginFormView = findViewById(R.id.login_form);
 		mLoginStatusView = findViewById(R.id.login_status);
-		//mLoginStatusMessageView = (TextView) findViewById(R.id.login_status_message);
-		//loading.setVisibility(View.GONE);
 		
 		submit.setOnClickListener(new OnClickListener() {
 			@Override
@@ -233,52 +229,7 @@ public class Login extends Activity {
 
 }
 
-//public class Login1 extends Activity {
-//	public static final String EXTRA_EMAIL = "com.example.android.authenticatordemo.extra.EMAIL";
-//
-//	private UserLoginTask mAuthTask = null;
-//
-//	
-//	@Override
-//	protected void onCreate(Bundle savedInstanceState) {
-//		super.onCreate(savedInstanceState);
-//		
-//		
-//		
-//		if(PreferenceData.getUserLoggedInStatus(this))
-//			goToMenu();
-//
-//		setContentView(R.layout.activity_login);
-//
-//		// Set up the login form.
-//		mUniqname = getIntent().getStringExtra(EXTRA_EMAIL);
-//		mUniqnameView = (EditText) findViewById(R.id.uniqnameInput);
-//		mUniqnameView.setText(mUniqname);
-//
-//		mPasswordView = (EditText) findViewById(R.id.password);
-////		mPasswordView
-////				.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-////					@Override
-////					public boolean onEditorAction(TextView textView, int id,
-////							KeyEvent keyEvent) {
-////						if (id == R.id.login || id == EditorInfo.IME_NULL) {
-////							attemptLogin();
-////							return true;
-////						}
-////						return false;
-////					}
-////				});
-//
-//		
-//	}
-//
-//	@Override
-//	public boolean onCreateOptionsMenu(Menu menu) {
-//		super.onCreateOptionsMenu(menu);
-//		getMenuInflater().inflate(R.menu.activity_login, menu);
-//		return true;
-//	}
-//
+
 //	/**
 //	 * Attempts to sign in or register the account specified by the login form.
 //	 * If there are form errors (invalid email, missing fields, etc.), the
