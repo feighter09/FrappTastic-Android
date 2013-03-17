@@ -35,7 +35,7 @@ public class MainMenu extends Activity {
 	}
 	
 	public void logOut(View v){
-		PreferenceData.clearLoggedInUniqname(this);
+		PreferenceData.clearLoggedIn(this);
 		Intent intent = new Intent(this, Login.class);
 		startActivity(intent);
 	}

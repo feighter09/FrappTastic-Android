@@ -1,6 +1,6 @@
 package com.triangleApp.util;
 
-public enum QuickEventRadioButtons {
+public enum QuickEventType {
 	FOOD, BROHOOD, SPORTS, OTHER;
 	
 	@Override public String toString() {
@@ -8,4 +8,5 @@ public enum QuickEventRadioButtons {
 		String s = super.toString();
 		return s.substring(0, 1) + s.substring(1).toLowerCase();
 	}
+	
 }

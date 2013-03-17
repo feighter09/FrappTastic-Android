@@ -1,7 +1,6 @@
 package com.triangleApp.popUps;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -9,7 +8,10 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
+import com.parse.PushService;
+import com.triangleApp.QuickEvent;
 import com.triangleApp.R;
+import com.triangleApp.util.QuickEventType;
 
 public class NotificationSettingsDialog extends DialogFragment {
 
@@ -43,14 +45,23 @@ public class NotificationSettingsDialog extends DialogFragment {
 	           .setPositiveButton(R.string.update, new DialogInterface.OnClickListener() {
 	               @Override
 	               public void onClick(DialogInterface dialog, int id) {
-	                   // User clicked OK, so save the mSelectedItems results somewhere
+	            	   // User clicked OK, so save the mSelectedItems results somewhere
 	                   // or return them to the component that opened the dialog
-	            	   // set parse subscriptions
+	            	   
+	            	   //unsubscribe from everything
+	            	   for(QuickEventType rb : QuickEventType.values())
+	            		   PushService.unsubscribe(getActivity(), rb.toString());
+	            	   //subscribe to selected event types
+	            	   for(Integer i : mSelectedItems)
+	            		   PushService.subscribe(getActivity(),
+	            				   				 QuickEventType.values()[i].toString(), 
+	            				   				 QuickEvent.class);
 	               }
 	           })
 	           .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
 	               @Override
 	               public void onClick(DialogInterface dialog, int id) {
+	            	   //do nothing
 	               }
 	           });
 

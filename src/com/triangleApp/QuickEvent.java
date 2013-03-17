@@ -4,7 +4,7 @@ import com.parse.Parse;
 import com.triangleApp.popUps.NotificationSettingsDialog;
 import com.triangleApp.popUps.QuickEventDialog;
 import com.triangleApp.popUps.TimePickerFragment;
-import com.triangleApp.util.QuickEventRadioButtons;
+import com.triangleApp.util.QuickEventType;
 import com.triangleApp.R;
 
 import android.os.Bundle;
@@ -72,19 +72,19 @@ public class QuickEvent extends FragmentActivity {
 	    switch(view.getId()) {
 	        case R.id.quickEventFoodRadioButton:
 	            if (checked)
-	                eventType = QuickEventRadioButtons.FOOD.toString();
+	                eventType = QuickEventType.FOOD.toString();
 	            break;
 	        case R.id.quickEventBroHoodRadioButton:
 	            if (checked)
-	            	eventType = QuickEventRadioButtons.BROHOOD.toString();
+	            	eventType = QuickEventType.BROHOOD.toString();
 	            break;
 	        case R.id.quickEventSportsRadioButton:
 	            if (checked)
-	            	eventType = QuickEventRadioButtons.SPORTS.toString();
+	            	eventType = QuickEventType.SPORTS.toString();
 	            break;
 	        case R.id.quickEventOtherRadioButton:
 	            if (checked)
-	            	eventType = QuickEventRadioButtons.OTHER.toString();
+	            	eventType = QuickEventType.OTHER.toString();
 	            break;
 	    }
 	}

@@ -1,7 +1,8 @@
 package com.triangleApp;
 
-import com.parse.Parse;
+import com.parse.PushService;
 import com.triangleApp.util.PreferenceData;
+import com.triangleApp.util.QuickEventType;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -13,52 +14,178 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.KeyEvent;
-import android.view.Menu;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
-import android.widget.TextView;
 
-/**
- * Activity which displays a login screen to the user, offering registration as
- * well.
- */
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.ParseException;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
+
+import android.content.Context;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.Toast;
+
 public class Login extends Activity {
-	/**
-	 * A dummy authentication store containing known user names and passwords.
-	 * TODO: remove after connecting to a real authentication system.
-	 */
-	private static final String[] DUMMY_CREDENTIALS = new String[] {
-			"afeight:asdf", "pcgood:noturnonred" };
 
-	/**
-	 * The default email to populate the email field with.
-	 */
-	public static final String EXTRA_EMAIL = "com.example.android.authenticatordemo.extra.EMAIL";
-
-	/**
-	 * Keep track of the login task to ensure we can cancel it if requested.
-	 */
-	private UserLoginTask mAuthTask = null;
-
-	// Values for email and password at the time of the login attempt.
-	private String mUniqname;
-	private String mPassword;
-
-	// UI references.
-	private EditText mUniqnameView;
-	private EditText mPasswordView;
+	private EditText uniqnameInput, passwordInput;
+	private Button submit;
+	private ProgressBar loading;
+	
+	private Context ctx;
+	
 	private View mLoginFormView;
 	private View mLoginStatusView;
-	private TextView mLoginStatusMessageView;
 	
-	private void setLogin(){
-		PreferenceData.setUserLoggedInStatus(this, true);
+	private String result, uniqname, password, firstname, lastname;
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_login);
+		
+		uniqnameInput = (EditText) findViewById(R.id.uniqnameInput);
+		passwordInput = (EditText) findViewById(R.id.passwordInput);
+		submit = (Button) findViewById(R.id.sign_in_button);
+		//loading = (ProgressBar) findViewById(R.id.progressBar1);
+		
+		mLoginFormView = findViewById(R.id.login_form);
+		mLoginStatusView = findViewById(R.id.login_status);
+		//mLoginStatusMessageView = (TextView) findViewById(R.id.login_status_message);
+		//loading.setVisibility(View.GONE);
+		
+		submit.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				uniqname = uniqnameInput.getText().toString();
+				password = passwordInput.getText().toString().trim();
+				
+				if(uniqname.length() == 0 || password.length() == 0){
+					Toast.makeText(ctx, "Please enter first and last name", Toast.LENGTH_SHORT)
+						 .show();
+				} else {
+					showProgress(true);
+					new LoginHttpPost().execute(uniqname, password);
+				}
+			}
+		});
+		
+		uniqname = PreferenceData.getLoggedInUniqname(this);
+		password = PreferenceData.getLoggedInPassword(this);
+		
+		if(!uniqname.isEmpty() && !password.isEmpty()){
+			showProgress(true);
+			new LoginHttpPost().execute(uniqname, password);
+		}
 	}
 	
-	private void setupParse(){
-		Intent intent = new Intent(this, ParseLogin.class);
-		startActivity(intent);
+	private class LoginHttpPost extends AsyncTask<String, Void, String>{
+		
+		private HttpClient client;
+		private HttpPost post;
+		private HttpResponse response;
+		private final String url = "http://www.triangleumich.com/mobile_login_check.php";
+		
+		public LoginHttpPost(){
+			client = new DefaultHttpClient();
+			post = new HttpPost(url);
+		}
+		
+		public String doPost(List<NameValuePair> params){
+			try {
+				post.setEntity(new UrlEncodedFormEntity(params));
+				response = client.execute(post);
+			} catch (ClientProtocolException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+			String res = "";
+			try {
+				res = EntityUtils.toString(response.getEntity());
+			} catch (ParseException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+			return res;
+		}
+
+		@Override
+		protected String doInBackground(String... params) {
+			client = new DefaultHttpClient();
+			post = new HttpPost(url);
+			
+			if(params.length != 2)
+				return null;
+			
+			List<NameValuePair> phpParams = new ArrayList<NameValuePair>();
+			phpParams.add(new BasicNameValuePair("name", params[0]));
+			phpParams.add(new BasicNameValuePair("password", params[1]));
+			
+			return doPost(phpParams);
+		}
+		
+		@Override
+		protected void onPostExecute(String result){
+			if(parseResult(result)){
+				setLogin(uniqname, password, firstname, lastname);
+				setUpParse();
+				goToMenu();
+			}// else if(result.equals(""))
+			
+		}
+		
+		private boolean parseResult(String response){
+			boolean first = true;
+			result = response.substring(8);
+			
+			if( response.substring(0, 7).equals("failure") ){
+				result = response.substring(9);
+				Toast.makeText(getBaseContext(), result, Toast.LENGTH_SHORT).show();
+				return false;
+			}
+			
+			firstname = lastname = "";
+			for(char c : result.toCharArray()){
+				if(c == '|'){
+					first = false;
+					continue;
+				}
+				
+				if(first)
+					firstname += c;
+				else
+					lastname += c;
+			}
+			
+			Toast.makeText(getBaseContext(), "Welcome, " + firstname + " " + lastname, Toast.LENGTH_SHORT).show();
+			return true;
+		}
+		
+	}
+	
+	private void setLogin(String uniq, String pass, String first, String last){
+		PreferenceData.setLoggedInUserInfo(getBaseContext(), uniq, pass, first, last);
+	}
+	
+	private void setUpParse(){
+		for(QuickEventType rb : QuickEventType.values())
+			PushService.subscribe(getBaseContext(), rb.toString(), QuickEvent.class);
 	}
 	
 	private void goToMenu(){
@@ -66,108 +193,6 @@ public class Login extends Activity {
 		startActivity(intent);
 	}
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		
-		Parse.initialize(this, "JTeN6P0AlreKF6pmi8G4TBnHpH5N25WMRLcmNlg4", 
-				   "sAGC53pRcBjfGysAJU8tlM9m5QBxc6UhT4uMow71"); 
-		
-		if(PreferenceData.getUserLoggedInStatus(this))
-			goToMenu();
-
-		setContentView(R.layout.activity_login);
-
-		// Set up the login form.
-		mUniqname = getIntent().getStringExtra(EXTRA_EMAIL);
-		mUniqnameView = (EditText) findViewById(R.id.uniqnameInput);
-		mUniqnameView.setText(mUniqname);
-
-		mPasswordView = (EditText) findViewById(R.id.password);
-//		mPasswordView
-//				.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-//					@Override
-//					public boolean onEditorAction(TextView textView, int id,
-//							KeyEvent keyEvent) {
-//						if (id == R.id.login || id == EditorInfo.IME_NULL) {
-//							attemptLogin();
-//							return true;
-//						}
-//						return false;
-//					}
-//				});
-
-		mLoginFormView = findViewById(R.id.login_form);
-		mLoginStatusView = findViewById(R.id.login_status);
-		mLoginStatusMessageView = (TextView) findViewById(R.id.login_status_message);
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		super.onCreateOptionsMenu(menu);
-		getMenuInflater().inflate(R.menu.activity_login, menu);
-		return true;
-	}
-
-	/**
-	 * Attempts to sign in or register the account specified by the login form.
-	 * If there are form errors (invalid email, missing fields, etc.), the
-	 * errors are presented and no actual login attempt is made.
-	 */
-	public void attemptLogin(View v) {
-		if (mAuthTask != null) {
-			return;
-		}
-
-		// Reset errors.
-		mUniqnameView.setError(null);
-		mPasswordView.setError(null);
-
-		// Store values at the time of the login attempt.
-		mUniqname = mUniqnameView.getText().toString();
-		mPassword = mPasswordView.getText().toString();
-
-		boolean cancel = false;
-		View focusView = null;
-
-		// Check for a valid password.
-		if (TextUtils.isEmpty(mPassword)) {
-			mPasswordView.setError(getString(R.string.error_field_required));
-			focusView = mPasswordView;
-			cancel = true;
-		} else if (mPassword.length() < 4) {
-			mPasswordView.setError(getString(R.string.error_invalid_password));
-			cancel = true;
-		}
-
-		// Check for a valid email address.
-		if (TextUtils.isEmpty(mUniqname)) {
-			mUniqnameView.setError(getString(R.string.error_field_required));
-			focusView = mUniqnameView;
-			cancel = true;
-		} else if (mUniqname.contains("@")) {
-			mUniqnameView.setError(getString(R.string.error_invalid_uniqname));
-			focusView = mUniqnameView;
-			cancel = true;
-		}
-
-		if (cancel) {
-			// There was an error; don't attempt login and focus the first
-			// form field with an error.
-			focusView.requestFocus();
-		} else {
-			// Show a progress spinner, and kick off a background task to
-			// perform the user login attempt.
-			mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
-			showProgress(true);
-			mAuthTask = new UserLoginTask();
-			mAuthTask.execute((Void) null);
-		}
-	}
-
-	/**
-	 * Shows the progress UI and hides the login form.
-	 */
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
 	private void showProgress(final boolean show) {
 		// On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
@@ -206,52 +231,130 @@ public class Login extends Activity {
 		}
 	}
 
-	/**
-	 * Represents an asynchronous login/registration task used to authenticate
-	 * the user.
-	 */
-	public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
-		@Override
-		protected Boolean doInBackground(Void... params) {
-			// TODO: attempt authentication against a network service.
-
-			try {
-				// Simulate network access.
-				Thread.sleep(2000);
-			} catch (InterruptedException e) {
-				return false;
-			}
-
-			for (String credential : DUMMY_CREDENTIALS) {
-				String[] pieces = credential.split(":");
-				if (pieces[0].equals(mUniqname)) {
-					// Account exists, return true if the password matches.
-					return pieces[1].equals(mPassword);
-				}
-			}
-
-			return false;
-		}
-
-		@Override
-		protected void onPostExecute(final Boolean success) {
-			mAuthTask = null;
-			showProgress(false);
-
-			if (success) {
-				setLogin();
-				setupParse();
-//				finish();
-			} else {
-				mUniqnameView.setError(getString(R.string.error_incorrect_uniqname));
-				mUniqnameView.requestFocus();
-			}
-		}
-
-		@Override
-		protected void onCancelled() {
-			mAuthTask = null;
-			showProgress(false);
-		}
-	}
 }
+
+//public class Login1 extends Activity {
+//	public static final String EXTRA_EMAIL = "com.example.android.authenticatordemo.extra.EMAIL";
+//
+//	private UserLoginTask mAuthTask = null;
+//
+//	
+//	@Override
+//	protected void onCreate(Bundle savedInstanceState) {
+//		super.onCreate(savedInstanceState);
+//		
+//		
+//		
+//		if(PreferenceData.getUserLoggedInStatus(this))
+//			goToMenu();
+//
+//		setContentView(R.layout.activity_login);
+//
+//		// Set up the login form.
+//		mUniqname = getIntent().getStringExtra(EXTRA_EMAIL);
+//		mUniqnameView = (EditText) findViewById(R.id.uniqnameInput);
+//		mUniqnameView.setText(mUniqname);
+//
+//		mPasswordView = (EditText) findViewById(R.id.password);
+////		mPasswordView
+////				.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+////					@Override
+////					public boolean onEditorAction(TextView textView, int id,
+////							KeyEvent keyEvent) {
+////						if (id == R.id.login || id == EditorInfo.IME_NULL) {
+////							attemptLogin();
+////							return true;
+////						}
+////						return false;
+////					}
+////				});
+//
+//		
+//	}
+//
+//	@Override
+//	public boolean onCreateOptionsMenu(Menu menu) {
+//		super.onCreateOptionsMenu(menu);
+//		getMenuInflater().inflate(R.menu.activity_login, menu);
+//		return true;
+//	}
+//
+//	/**
+//	 * Attempts to sign in or register the account specified by the login form.
+//	 * If there are form errors (invalid email, missing fields, etc.), the
+//	 * errors are presented and no actual login attempt is made.
+//	 */
+//	public void attemptLogin(View v) {
+//		if (mAuthTask != null) {
+//			return;
+//		}
+//
+//		// Reset errors.
+//		mUniqnameView.setError(null);
+//		mPasswordView.setError(null);
+//
+//		// Store values at the time of the login attempt.
+//		mUniqname = mUniqnameView.getText().toString();
+//		mPassword = mPasswordView.getText().toString();
+//
+//		boolean cancel = false;
+//		View focusView = null;
+//
+//		// Check for a valid password.
+//		if (TextUtils.isEmpty(mPassword)) {
+//			mPasswordView.setError(getString(R.string.error_field_required));
+//			focusView = mPasswordView;
+//			cancel = true;
+//		} else if (mPassword.length() < 4) {
+//			mPasswordView.setError(getString(R.string.error_invalid_password));
+//			cancel = true;
+//		}
+//
+//		// Check for a valid email address.
+//		if (TextUtils.isEmpty(mUniqname)) {
+//			mUniqnameView.setError(getString(R.string.error_field_required));
+//			focusView = mUniqnameView;
+//			cancel = true;
+//		} else if (mUniqname.contains("@")) {
+//			mUniqnameView.setError(getString(R.string.error_invalid_uniqname));
+//			focusView = mUniqnameView;
+//			cancel = true;
+//		}
+//
+//		if (cancel) {
+//			// There was an error; don't attempt login and focus the first
+//			// form field with an error.
+//			focusView.requestFocus();
+//		} else {
+//			// Show a progress spinner, and kick off a background task to
+//			// perform the user login attempt.
+//			mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
+//			showProgress(true);
+//			mAuthTask = new UserLoginTask();
+//			mAuthTask.execute((Void) null);
+//		}
+//	}
+//
+//
+//		@Override
+//		protected void onPostExecute(final Boolean success) {
+//			mAuthTask = null;
+//			showProgress(false);
+//
+//			if (success) {
+//				setLogin();
+//				setUpParse();
+//				goToMenu();
+//			} else {
+//				mUniqnameView.setError(getString(R.string.error_incorrect_uniqname));
+//				mUniqnameView.requestFocus();
+//			}
+//		}
+//
+//		@Override
+//		protected void onCancelled() {
+//			mAuthTask = null;
+//			showProgress(false);
+//		}
+//	}
+//}
