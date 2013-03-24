@@ -30,7 +30,7 @@ public class MainMenu extends Activity {
 	}
 	
 	public void showQuickEvent(View v){
-		Intent intent = new Intent(this, QuickEvent.class);
+		Intent intent = new Intent(this, QuickEventMenu.class);
 		startActivity(intent);
 	}
 	

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	
+
     <string name="app_name">Triangle App</string>
     <string name="mainMenuTitleBar">Main Menu</string>
     <string name="hello_world">Hello world!</string>
@@ -8,11 +8,11 @@
     <string name="announcements">Announcements</string>
     <string name="announcementsTitleBar">Announcements</string>
     <string name="backToMenu">Back to Main Menu</string>
-    <string name="quickEvent">Plan a Quick Event</string>
+    <string name="quickEvent">Quick Events</string>
     <string name="quickEventTitleBar">Plan a Quick Event</string>
     <string name="quickEventTitle">Title of Event: </string>
     <string name="quickEventTime">Time of Event: </string>
-    <string name="blank"/>
+    <string name="blank" />
     <string name="set">Set</string>
     <string name="quickEventType">Type of Event: </string>
     <string name="quickEventFood">Food</string>
@@ -22,16 +22,24 @@
     <string name="quickEventNotify">Notify Others</string>
     <string name="cancel">Cancel</string>
     <string name="areYouSure">Are you sure?</string>
-    <string name="manageNotifications">Notification Settings</string>
+    <string name="quickEventPreferences">Notification Settings</string>
     <string name="update">Update</string>
+
     <string-array name="notificationSettings">
         <item>Food</item>
         <item>Brotherhood</item>
         <item>Sports</item>
         <item>Other</item>
     </string-array>
+
     <string name="parseSetupTitleBar">Push Notification Setup</string>
     <string name="parseSignUpMessage">In order to receive push notifications, you\'ll need a Parse account.</string>
     <string name="logOut">Log Out</string>
+    <string name="title_activity_quick_event_list">QuickEventList</string>
+    <string name="title_activity_quick_event_menu">QuickEventMenu</string>
+    <string name="makeQuickEvent">Send a Quick Event</string>
+    <string name="viewEventList">View Quick Events</string>
+    <string name="backToQuickEventMenu">Go Back to Quick Event Menu</string>
+    <string name="quickEventDate">Date of Event: </string>
 
 </resources>

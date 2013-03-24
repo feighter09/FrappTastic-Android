@@ -9,7 +9,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 
 import com.parse.PushService;
-import com.triangleApp.QuickEvent;
+import com.triangleApp.MakeQuickEvent;
 import com.triangleApp.R;
 import com.triangleApp.util.QuickEventType;
 
@@ -55,7 +55,7 @@ public class NotificationSettingsDialog extends DialogFragment {
 	            	   for(Integer i : mSelectedItems)
 	            		   PushService.subscribe(getActivity(),
 	            				   				 QuickEventType.values()[i].toString(), 
-	            				   				 QuickEvent.class);
+	            				   				 MakeQuickEvent.class);
 	               }
 	           })
 	           .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {

@@ -12,8 +12,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 
@@ -35,7 +33,6 @@ import org.apache.http.util.EntityUtils;
 import android.content.Context;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 public class Login extends Activity {
@@ -49,6 +46,8 @@ public class Login extends Activity {
 	private View mLoginStatusView;
 	
 	private String result, uniqname, password, firstname, lastname;
+	
+	private static boolean firstLogin = true;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -139,8 +138,12 @@ public class Login extends Activity {
 		@Override
 		protected void onPostExecute(String result){
 			if(parseResult(result)){
-				setLogin(uniqname, password, firstname, lastname);
-				setUpParse();
+				if(firstLogin){
+					setLogin(uniqname, password, firstname, lastname);
+					setUpParse();
+					firstLogin = false;
+				}
+				
 				goToMenu();
 			}// else if(result.equals(""))
 			
@@ -181,7 +184,7 @@ public class Login extends Activity {
 	
 	private void setUpParse(){
 		for(QuickEventType rb : QuickEventType.values())
-			PushService.subscribe(getBaseContext(), rb.toString(), QuickEvent.class);
+			PushService.subscribe(getBaseContext(), rb.toString(), MakeQuickEvent.class);
 	}
 	
 	private void goToMenu(){

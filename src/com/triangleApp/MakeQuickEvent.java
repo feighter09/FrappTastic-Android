@@ -1,7 +1,6 @@
 package com.triangleApp;
 
-import com.parse.Parse;
-import com.triangleApp.popUps.NotificationSettingsDialog;
+import com.triangleApp.popUps.DatePickerFragment;
 import com.triangleApp.popUps.QuickEventDialog;
 import com.triangleApp.popUps.TimePickerFragment;
 import com.triangleApp.util.QuickEventType;
@@ -16,15 +15,16 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class QuickEvent extends FragmentActivity {
+public class MakeQuickEvent extends FragmentActivity {
 
 	public String eventType;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_quick_event);
+		setContentView(R.layout.activity_make_quick_event);
 	}
 
 	@Override
@@ -39,28 +39,35 @@ public class QuickEvent extends FragmentActivity {
 		timePicker.show(getFragmentManager(), "timePicker");
 	}
 	
-	public void notificationSettings(View v){
-		DialogFragment notificationSettings = new NotificationSettingsDialog();
-		notificationSettings.show(getFragmentManager(), "notificationSettings");
+	public void setQuickEventDate(View v){
+		DialogFragment datePicker = new DatePickerFragment();
+		datePicker.show(getFragmentManager(), "datePicker");
 	}
 	
 	public void notifyOthers(View v){
-		String eventTitle, eventTime;
+		String eventTitle, eventDate, eventTime;
 		
 		EditText quickEventTitle = (EditText) findViewById(R.id.quickEventTitleInput);
 		eventTitle = quickEventTitle.getText().toString();
+		TextView quickEventDate = (TextView) findViewById(R.id.quickEventDate);
+		eventDate = quickEventDate.getText().toString();
 		TextView quickEventTime = (TextView) findViewById(R.id.quickEventTime);
 		eventTime = quickEventTime.getText().toString();
 		
-		QuickEventDialog notifyDialog = new QuickEventDialog();
-		notifyDialog.setEventTitle(eventTitle);
-		notifyDialog.setEventTime(eventTime);
-		notifyDialog.setEventType(eventType);
-		notifyDialog.show(getFragmentManager(), "notifyDialog");
+		if(eventTitle.isEmpty() || eventDate.isEmpty() || eventTime.isEmpty() || eventType == null)
+			Toast.makeText(this, "Please provide all event info", Toast.LENGTH_SHORT).show();
+		else {
+			QuickEventDialog notifyDialog = new QuickEventDialog();
+			notifyDialog.setEventTitle(eventTitle);
+			notifyDialog.setEventDate(eventDate);
+			notifyDialog.setEventTime(eventTime);
+			notifyDialog.setEventType(eventType);
+			notifyDialog.show(getFragmentManager(), "notifyDialog");
+		}
 	}
 	
-	public void backToMenu(View v){
-		Intent intent = new Intent(this, MainMenu.class);
+	public void backToQuickEventMenu(View v){
+		Intent intent = new Intent(this, QuickEventMenu.class);
 		startActivity(intent);
 	}
 	

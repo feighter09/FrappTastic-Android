@@ -29,13 +29,46 @@
     </EditText>
 
     <TextView
-        android:id="@+id/quickEventTimeLabel"
+        android:id="@+id/quickEventDateLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/quickEventTitleInput"
-        android:layout_marginLeft="20dp"
+        android:layout_marginLeft="10dp"
         android:layout_marginTop="15dp"
+        android:text="@string/quickEventDate"
+        android:textSize="20sp" />
+    
+    <TextView
+        android:id="@+id/quickEventDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/quickEventDateLabel"
+        android:layout_alignBottom="@+id/quickEventDateLabel"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@+id/quickEventDateLabel"
+        android:text="@string/blank"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/quickEventDateSet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/quickEventTitleInput"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
+        android:text="@string/set"
+        android:onClick="setQuickEventDate" />
+    
+    <TextView
+        android:id="@+id/quickEventTimeLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/quickEventDateLabel"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="25dp"
         android:text="@string/quickEventTime"
         android:textSize="20sp" />
 
@@ -55,11 +88,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/quickEventTitleInput"
+        android:layout_below="@+id/quickEventDateSet"
         android:layout_marginRight="10dp"
         android:layout_marginTop="5dp"
-        android:onClick="setQuickEventTime"
-        android:text="@string/set" />
+        android:text="@string/set"
+        android:onClick="setQuickEventTime" />
 
     <TextView
         android:id="@+id/quickEventTypeLabel"
@@ -125,17 +158,7 @@
         android:layout_alignLeft="@+id/quickEventTitleInput"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="30dp"
-        android:onClick="backToMenu"
+        android:onClick="backToQuickEventMenu"
         android:text="@string/cancel" />
-
-    <Button
-        android:id="@+id/manageNotificationsButton"
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:layout_alignLeft="@+id/radioGroup1"
-        android:layout_below="@+id/radioGroup1"
-        android:text="@string/manageNotifications"
-        android:textSize="10sp"
-        android:onClick="notificationSettings" />
 
 </RelativeLayout>
