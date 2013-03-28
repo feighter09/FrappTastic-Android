@@ -22,6 +22,11 @@
         <activity
             android:name="com.triangleApp.MainMenu"
             android:label="@string/mainMenuTitleBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name="com.triangleApp.Announcements"
@@ -35,11 +40,7 @@
             android:name="com.triangleApp.Login"
             android:label="@string/title_activity_login"
             android:windowSoftInputMode="adjustResize|stateVisible" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            
         </activity>
 
         <service android:name="com.parse.PushService" />
@@ -63,6 +64,10 @@
         <activity
             android:name="com.triangleApp.QuickEventMenu"
             android:label="@string/title_activity_quick_event_menu" >
+        </activity>
+        <activity
+            android:name="com.triangleApp.Directory"
+            android:label="@string/title_activity_brother_directory" >
         </activity>
     </application>
 

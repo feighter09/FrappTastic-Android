@@ -106,16 +106,16 @@ public class QuickEventDialog extends DialogFragment {
 				e.printStackTrace();
 			}
 			
-			String res = "";
+			String responseStr = "";
 			try {
-				res = EntityUtils.toString(response.getEntity());
+				responseStr = EntityUtils.toString(response.getEntity());
 			} catch (ParseException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 
-			return res;
+			return responseStr;
 		}
 
 		@Override

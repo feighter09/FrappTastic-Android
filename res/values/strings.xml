@@ -41,5 +41,7 @@
     <string name="viewEventList">View Quick Events</string>
     <string name="backToQuickEventMenu">Go Back to Quick Event Menu</string>
     <string name="quickEventDate">Date of Event: </string>
+    <string name="title_activity_brother_directory">BrotherDirectory</string>
+    <string name="directory">Brother Directory</string>
 
 </resources>

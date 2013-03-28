@@ -34,6 +34,11 @@ public class MainMenu extends Activity {
 		startActivity(intent);
 	}
 	
+	public void showDirectory(View v){
+		Intent intent = new Intent(this, Directory.class);
+		startActivity(intent);
+	}
+	
 	public void logOut(View v){
 		PreferenceData.clearLoggedIn(this);
 		Intent intent = new Intent(this, Login.class);

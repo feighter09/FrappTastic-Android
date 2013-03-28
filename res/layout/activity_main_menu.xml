@@ -12,8 +12,8 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
-        android:onClick="showAnnouncements"
-        android:text="@string/announcements" />
+        android:text="@string/announcements"
+        android:onClick="showAnnouncements" />
 
     <Button
         android:id="@+id/quickEventButton"
@@ -21,16 +21,25 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/announcementsButton"
-        android:onClick="showQuickEvent"
-        android:text="@string/quickEvent" />
-    
+        android:text="@string/quickEvent"
+        android:onClick="showQuickEvent" />
+
+    <Button
+        android:id="@+id/directoryButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/quickEventButton"
+        android:layout_centerHorizontal="true"
+        android:text="@string/directory"
+        android:onClick="showDirectory" />
+
     <Button
         android:id="@+id/logOutButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/quickEventButton"
-        android:onClick="logOut"
-        android:text="@string/logOut" />
+        android:text="@string/logOut"
+        android:onClick="logOut" />
 
 </RelativeLayout>
