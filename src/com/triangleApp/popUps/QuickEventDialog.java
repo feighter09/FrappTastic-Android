@@ -58,7 +58,20 @@ public class QuickEventDialog extends DialogFragment {
                        yearStr = eventDate.substring(6);
                        dateStr = yearStr + "-" + monthStr + "-" + dayStr;
                        
-                       new QuickEventHttpPost().execute(eventTitle, name, dateStr, eventTime);
+                       int hours;
+                       if(eventTime.charAt(1) == ':')
+                    	   hours = Integer.parseInt( eventTime.substring(0, 1) );
+                       else
+                    	   hours = Integer.parseInt( eventTime.substring(0, 2) );
+                       
+                       if( eventTime.subSequence( eventTime.length() - 2, eventTime.length() ).equals("PM") )
+                    	   hours += 12;
+                       if(hours % 12 == 0)
+                    	   hours -= 12;
+                       
+                       String time = hours < 10 ? "0" + hours : "" + hours;
+                       time += eventTime.charAt(1) == ':' ? eventTime.substring(1, 4) : eventTime.substring(2, 5);  
+                       new QuickEventHttpPost().execute(eventTitle, name, dateStr, time);
                        
                        //send push via parse
                 	   ParsePush push = new ParsePush();
@@ -129,7 +142,6 @@ public class QuickEventDialog extends DialogFragment {
 			List<NameValuePair> phpParams = new ArrayList<NameValuePair>();
 			phpParams.add(new BasicNameValuePair("title", params[0]));
 			phpParams.add(new BasicNameValuePair("name", params[1]));
-			phpParams.add(new BasicNameValuePair("going", "1"));
 			phpParams.add(new BasicNameValuePair("date", params[2]));
 			phpParams.add(new BasicNameValuePair("time", params[3]));
 			

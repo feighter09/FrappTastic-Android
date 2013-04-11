@@ -40,7 +40,6 @@
             android:name="com.triangleApp.Login"
             android:label="@string/title_activity_login"
             android:windowSoftInputMode="adjustResize|stateVisible" >
-            
         </activity>
 
         <service android:name="com.parse.PushService" />
@@ -68,6 +67,10 @@
         <activity
             android:name="com.triangleApp.Directory"
             android:label="@string/title_activity_brother_directory" >
+        </activity>
+        <activity
+            android:name="com.triangleApp.QuickEventResponses"
+            android:label="@string/title_activity_quick_event_responses" >
         </activity>
     </application>
 

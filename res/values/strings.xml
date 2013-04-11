@@ -43,5 +43,8 @@
     <string name="quickEventDate">Date of Event: </string>
     <string name="title_activity_brother_directory">BrotherDirectory</string>
     <string name="directory">Brother Directory</string>
+    <string name="title_activity_quick_event_responses">QuickEventResponses</string>
+    <string name="quickEventRespond">Respond</string>
+    <string name="back">Back</string>
 
 </resources>

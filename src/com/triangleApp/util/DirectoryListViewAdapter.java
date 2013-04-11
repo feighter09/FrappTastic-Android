@@ -18,32 +18,27 @@ import android.widget.Toast;
 
 public class DirectoryListViewAdapter extends BaseAdapter {
 
-    private Context context = null;
-    private List<DirectoryContact> contacts = null;
+    private Context context;
+    private List<DirectoryContact> contacts;
 
 	public DirectoryListViewAdapter(Context context, JSONArray arr) {
         this.context = context;
         this.contacts = new ArrayList<DirectoryContact>();
         
-        DirectoryContact contact = new DirectoryContact();
-        for (int i = arr.length(); i >= 0; i--) {
-            try {
+        for (int i = 0; i < arr.length(); i++) {
+        	DirectoryContact contact = new DirectoryContact();
+        	try {
             	String name = arr.getJSONObject(i).get("first").toString() + " "
             					+ arr.getJSONObject(i).get("last").toString();
             	contact.setName(name);
             	contact.setPhone( arr.getJSONObject(i).get("phone").toString() );
             	contact.setEmail( arr.getJSONObject(i).get("email").toString() + "@umich.edu" );
             	
-            	String msg = "i: " + i + ", Name; " + contact.getName() + ", Phone: " + contact.getPhone();
-            	System.err.println(msg);
-            	Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
-            	
-                contacts .add(contact);
+                contacts.add(contact);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
-        
 	}
 	
 	public DirectoryContact getContact(int position){
@@ -68,7 +63,7 @@ public class DirectoryListViewAdapter extends BaseAdapter {
     
     @Override
     public View getView(int position, View convertView, ViewGroup viewGroup) {
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    	LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         convertView = inflater.inflate(R.layout.directory_contact, null);
         
         TextView name, phone, email;
