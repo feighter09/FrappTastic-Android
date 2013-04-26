@@ -11,7 +11,7 @@
         android:layout_above="@+id/backToMenuButton"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
-    
+
     <Button
         android:id="@+id/backToMenuButton"
         android:layout_width="match_parent"

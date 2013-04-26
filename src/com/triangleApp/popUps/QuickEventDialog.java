@@ -52,11 +52,7 @@ public class QuickEventDialog extends DialogFragment {
                        name = PreferenceData.getLoggedInFirstname(getActivity()) + " " 
                     		   + PreferenceData.getLoggedInLastname(getActivity());
                        
-                       String dayStr, monthStr, yearStr, dateStr;
-                       dayStr = eventDate.substring(3, 5);
-                       monthStr = eventDate.substring(0, 2);
-                       yearStr = eventDate.substring(6);
-                       dateStr = yearStr + "-" + monthStr + "-" + dayStr;
+                       String dateStr = formatDate(eventDate);
                        
                        int hours;
                        if(eventTime.charAt(1) == ':')
@@ -88,10 +84,6 @@ public class QuickEventDialog extends DialogFragment {
         // Create the AlertDialog object and return it
         return builder.create();
     }
-	
-	public void sendToast(String str){
-		Toast.makeText(getActivity(), str, Toast.LENGTH_LONG).show();
-	}
 	
 	private class QuickEventHttpPost extends AsyncTask<String, Void, String>{
 		
@@ -150,7 +142,6 @@ public class QuickEventDialog extends DialogFragment {
 		
 		@Override
 		protected void onPostExecute(String result){
-//			Toast.makeText(activityContext, result, Toast.LENGTH_LONG).show();
 			parseResult(result);
 		}
 		
@@ -168,7 +159,16 @@ public class QuickEventDialog extends DialogFragment {
 			
 			return true;
 		}
-		
+	}
+	
+	public String formatDate(String date) {
+		String dayStr, monthStr, yearStr, dateStr;
+        dayStr = date.substring(3, 5);
+        monthStr = date.substring(0, 2);
+        yearStr = date.substring(6);
+        dateStr = yearStr + "-" + monthStr + "-" + dayStr;
+        
+        return dateStr;
 	}
 	
 	public String getEventTitle() {

@@ -1,8 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+	style="@style/blue"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#990033"
     tools:context=".QuickEvent" >
 
     <TextView
@@ -159,6 +159,6 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="30dp"
         android:onClick="backToQuickEventMenu"
-        android:text="@string/cancel" />
+        android:text="@string/back" />
 
 </RelativeLayout>

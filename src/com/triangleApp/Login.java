@@ -184,7 +184,7 @@ public class Login extends Activity {
 	
 	private void setUpParse(){
 		for(QuickEventType rb : QuickEventType.values())
-			PushService.subscribe(getBaseContext(), rb.toString(), MakeQuickEvent.class);
+			PushService.subscribe(getBaseContext(), rb.toString(), QuickEventList.class);
 	}
 	
 	private void goToMenu(){

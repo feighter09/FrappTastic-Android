@@ -54,16 +54,17 @@ public class MakeQuickEvent extends FragmentActivity {
 		TextView quickEventTime = (TextView) findViewById(R.id.quickEventTime);
 		eventTime = quickEventTime.getText().toString();
 		
-		if(eventTitle.isEmpty() || eventDate.isEmpty() || eventTime.isEmpty() || eventType == null)
+		if(eventTitle.isEmpty() || eventDate.isEmpty() || eventTime.isEmpty() || eventType == null) {
 			Toast.makeText(this, "Please provide all event info", Toast.LENGTH_SHORT).show();
-		else {
-			QuickEventDialog notifyDialog = new QuickEventDialog();
-			notifyDialog.setEventTitle(eventTitle);
-			notifyDialog.setEventDate(eventDate);
-			notifyDialog.setEventTime(eventTime);
-			notifyDialog.setEventType(eventType);
-			notifyDialog.show(getFragmentManager(), "notifyDialog");
+			return;
 		}
+		
+		QuickEventDialog notifyDialog = new QuickEventDialog();
+		notifyDialog.setEventTitle(eventTitle);
+		notifyDialog.setEventDate(eventDate);
+		notifyDialog.setEventTime(eventTime);
+		notifyDialog.setEventType(eventType);
+		notifyDialog.show(getFragmentManager(), "notifyDialog");
 	}
 	
 	public void backToQuickEventMenu(View v){

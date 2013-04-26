@@ -52,7 +52,7 @@ public class QuickEventList extends Activity {
 		showProgress(true);
 		new QuickEventsHttpPost().execute();
 	}
-
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.

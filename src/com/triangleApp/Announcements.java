@@ -17,7 +17,7 @@ public class Announcements extends Activity {
 		setContentView(R.layout.activity_announcements);
 		
 		WebView webview = (WebView) findViewById(R.id.announcementsWebView);
-		webview.loadUrl("http://triangleumich.com/announcements.html");
+		webview.loadUrl("http://triangleumich.com/announcements.php");
 	}
 
 	@Override

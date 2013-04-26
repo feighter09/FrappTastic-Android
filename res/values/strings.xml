@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Triangle App</string>
+    <string name="app_name">Frapptastic</string>
     <string name="mainMenuTitleBar">Main Menu</string>
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
@@ -35,15 +35,15 @@
     <string name="parseSetupTitleBar">Push Notification Setup</string>
     <string name="parseSignUpMessage">In order to receive push notifications, you\'ll need a Parse account.</string>
     <string name="logOut">Log Out</string>
-    <string name="title_activity_quick_event_list">QuickEventList</string>
-    <string name="title_activity_quick_event_menu">QuickEventMenu</string>
+    <string name="title_activity_quick_event_list">Quick Event List</string>
+    <string name="title_activity_quick_event_menu">Quick Event Menu</string>
     <string name="makeQuickEvent">Send a Quick Event</string>
     <string name="viewEventList">View Quick Events</string>
     <string name="backToQuickEventMenu">Go Back to Quick Event Menu</string>
     <string name="quickEventDate">Date of Event: </string>
-    <string name="title_activity_brother_directory">BrotherDirectory</string>
-    <string name="directory">Brother Directory</string>
-    <string name="title_activity_quick_event_responses">QuickEventResponses</string>
+    <string name="title_activity_brother_directory">Brother Directory</string>
+    <string name="directory">Directory</string>
+    <string name="title_activity_quick_event_responses">Quick Event Responses</string>
     <string name="quickEventRespond">Respond</string>
     <string name="back">Back</string>
 
