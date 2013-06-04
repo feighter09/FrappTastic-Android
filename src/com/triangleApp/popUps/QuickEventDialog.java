@@ -39,7 +39,6 @@ public class QuickEventDialog extends DialogFragment {
     	activityContext = getActivity();
 		
 		String dialogMessage = "Send " + eventType + " event: \"" + eventTitle + "\" at " + eventTime + ", " + eventDate + "?";
-    	final String pushMessage = "New " + eventType + " event: \"" + eventTitle + "\" at " + eventTime + ", " + eventDate; 
     	
         // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -68,12 +67,6 @@ public class QuickEventDialog extends DialogFragment {
                        String time = hours < 10 ? "0" + hours : "" + hours;
                        time += eventTime.charAt(1) == ':' ? eventTime.substring(1, 4) : eventTime.substring(2, 5);  
                        new QuickEventHttpPost().execute(eventTitle, name, dateStr, time);
-                       
-                       //send push via parse
-                	   ParsePush push = new ParsePush();
-                       push.setChannel(eventType);
-                       push.setMessage(pushMessage);
-                       push.sendInBackground();
                    }
                })
                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -142,22 +135,19 @@ public class QuickEventDialog extends DialogFragment {
 		
 		@Override
 		protected void onPostExecute(String result){
-			parseResult(result);
-		}
-		
-		private boolean parseResult(String response){
-			if(response.equals("success"))
-				return true;
-			
-			String result;
-			result = response.substring(8);
-			
-			if( response.substring(0, 7).equals("failure") ){
-				result = response.substring(9);
-				return false;
+			if( !result.equals("success") ) {
+				Toast.makeText(activityContext, "Sorry, something went wrong. Please try again", 
+							   Toast.LENGTH_LONG).show();
+				return;
 			}
 			
-			return true;
+			//parseResult(result);
+			final String pushMessage = "New " + eventType + " event: \"" + eventTitle + "\" at " + eventTime + ", " + eventDate;
+			//send push via parse
+     	   	ParsePush push = new ParsePush();
+            push.setChannel(eventType);
+            push.setMessage(pushMessage);
+            push.sendInBackground();
 		}
 	}
 	

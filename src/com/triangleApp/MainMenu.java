@@ -1,7 +1,10 @@
 package com.triangleApp;
 
+import com.parse.Parse;
+import com.parse.PushService;
 import com.triangleApp.R;
 import com.triangleApp.util.PreferenceData;
+import com.triangleApp.util.QuickEventType;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -41,6 +44,10 @@ public class MainMenu extends Activity {
 	
 	public void logOut(View v){
 		PreferenceData.clearLoggedIn(this);
+
+		for(QuickEventType rb : QuickEventType.values())	//unsubscribe all parse notifications
+			PushService.unsubscribe(getBaseContext(), rb.toString());
+		
 		Intent intent = new Intent(this, Login.class);
 		startActivity(intent);
 	}
