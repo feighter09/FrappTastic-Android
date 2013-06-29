@@ -1,5 +1,7 @@
 package com.triangleApp;
 
+import com.triangleApp.R;
+
 import com.parse.PushService;
 import com.triangleApp.util.PreferenceData;
 import com.triangleApp.util.QuickEventType;
@@ -35,6 +37,10 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONTokener;
+
 public class Login extends Activity {
 
 	private EditText uniqnameInput, passwordInput;
@@ -45,7 +51,7 @@ public class Login extends Activity {
 	private View mLoginFormView;
 	private View mLoginStatusView;
 	
-	private String result, uniqname, password, firstname, lastname;
+	private String uniqname, password, firstname, lastname;
 	
 	private static boolean firstLogin = true;
 	
@@ -53,6 +59,8 @@ public class Login extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
+		
+		ctx = getBaseContext();
 		
 		uniqnameInput = (EditText) findViewById(R.id.uniqnameInput);
 		passwordInput = (EditText) findViewById(R.id.passwordInput);
@@ -65,7 +73,7 @@ public class Login extends Activity {
 			@Override
 			public void onClick(View v) {
 				uniqname = uniqnameInput.getText().toString();
-				password = passwordInput.getText().toString().trim();
+				password = passwordInput.getText().toString();
 				
 				if(uniqname.length() == 0 || password.length() == 0){
 					Toast.makeText(ctx, "Please enter first and last name", Toast.LENGTH_SHORT)
@@ -86,7 +94,7 @@ public class Login extends Activity {
 		}
 	}
 	
-	private class LoginHttpPost extends AsyncTask<String, Void, String>{
+	private class LoginHttpPost extends AsyncTask<String, Void, JSONObject>{
 		
 		private HttpClient client;
 		private HttpPost post;
@@ -98,7 +106,7 @@ public class Login extends Activity {
 			post = new HttpPost(url);
 		}
 		
-		public String doPost(List<NameValuePair> params){
+		public JSONObject doPost(List<NameValuePair> params){
 			try {
 				post.setEntity(new UrlEncodedFormEntity(params));
 				response = client.execute(post);
@@ -108,20 +116,19 @@ public class Login extends Activity {
 				e.printStackTrace();
 			}
 			
-			String res = "";
+			JSONObject JSON = null;
 			try {
-				res = EntityUtils.toString(response.getEntity());
-			} catch (ParseException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
+				String res = EntityUtils.toString(response.getEntity());
+				 JSON = new JSONObject(new JSONTokener(res));
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			
-			return res;
+			return JSON;
 		}
 
 		@Override
-		protected String doInBackground(String... params) {
+		protected JSONObject doInBackground(String... params) {
 			client = new DefaultHttpClient();
 			post = new HttpPost(url);
 			
@@ -136,44 +143,26 @@ public class Login extends Activity {
 		}
 		
 		@Override
-		protected void onPostExecute(String result){
-			if(parseResult(result)){
-				if(firstLogin){
-					setLogin(uniqname, password, firstname, lastname);
-					setUpParse();
-					firstLogin = false;
+		protected void onPostExecute(JSONObject result){
+			try {
+				if(result.getBoolean("success")){
+					firstname = result.getString("firstName"); lastname = result.getString("lastName");
+					
+					if(firstLogin){
+						setLogin(uniqname, password, firstname, lastname);
+						setUpParse();
+						firstLogin = false;
+					}
+					Toast.makeText(getBaseContext(), "Welcome, " + firstname + " " + lastname, Toast.LENGTH_LONG).show();
+					goToMenu();
+				} else {
+					showProgress(false);
+					Toast.makeText(getBaseContext(), "Failure: " + result.getString("error"), Toast.LENGTH_LONG).show();
 				}
-				
-				goToMenu();
-			}// else if(result.equals(""))
-			
-		}
-		
-		private boolean parseResult(String response){
-			boolean first = true;
-			result = response.substring(8);
-			
-			if( response.substring(0, 7).equals("failure") ){
-				result = response.substring(9);
-				Toast.makeText(getBaseContext(), result, Toast.LENGTH_SHORT).show();
-				return false;
+			} catch (JSONException e) {
+				e.printStackTrace();
 			}
 			
-			firstname = lastname = "";
-			for(char c : result.toCharArray()){
-				if(c == '|'){
-					first = false;
-					continue;
-				}
-				
-				if(first)
-					firstname += c;
-				else
-					lastname += c;
-			}
-			
-			Toast.makeText(getBaseContext(), "Welcome, " + firstname + " " + lastname, Toast.LENGTH_SHORT).show();
-			return true;
 		}
 		
 	}
@@ -231,84 +220,3 @@ public class Login extends Activity {
 	}
 
 }
-
-
-//	/**
-//	 * Attempts to sign in or register the account specified by the login form.
-//	 * If there are form errors (invalid email, missing fields, etc.), the
-//	 * errors are presented and no actual login attempt is made.
-//	 */
-//	public void attemptLogin(View v) {
-//		if (mAuthTask != null) {
-//			return;
-//		}
-//
-//		// Reset errors.
-//		mUniqnameView.setError(null);
-//		mPasswordView.setError(null);
-//
-//		// Store values at the time of the login attempt.
-//		mUniqname = mUniqnameView.getText().toString();
-//		mPassword = mPasswordView.getText().toString();
-//
-//		boolean cancel = false;
-//		View focusView = null;
-//
-//		// Check for a valid password.
-//		if (TextUtils.isEmpty(mPassword)) {
-//			mPasswordView.setError(getString(R.string.error_field_required));
-//			focusView = mPasswordView;
-//			cancel = true;
-//		} else if (mPassword.length() < 4) {
-//			mPasswordView.setError(getString(R.string.error_invalid_password));
-//			cancel = true;
-//		}
-//
-//		// Check for a valid email address.
-//		if (TextUtils.isEmpty(mUniqname)) {
-//			mUniqnameView.setError(getString(R.string.error_field_required));
-//			focusView = mUniqnameView;
-//			cancel = true;
-//		} else if (mUniqname.contains("@")) {
-//			mUniqnameView.setError(getString(R.string.error_invalid_uniqname));
-//			focusView = mUniqnameView;
-//			cancel = true;
-//		}
-//
-//		if (cancel) {
-//			// There was an error; don't attempt login and focus the first
-//			// form field with an error.
-//			focusView.requestFocus();
-//		} else {
-//			// Show a progress spinner, and kick off a background task to
-//			// perform the user login attempt.
-//			mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
-//			showProgress(true);
-//			mAuthTask = new UserLoginTask();
-//			mAuthTask.execute((Void) null);
-//		}
-//	}
-//
-//
-//		@Override
-//		protected void onPostExecute(final Boolean success) {
-//			mAuthTask = null;
-//			showProgress(false);
-//
-//			if (success) {
-//				setLogin();
-//				setUpParse();
-//				goToMenu();
-//			} else {
-//				mUniqnameView.setError(getString(R.string.error_incorrect_uniqname));
-//				mUniqnameView.requestFocus();
-//			}
-//		}
-//
-//		@Override
-//		protected void onCancelled() {
-//			mAuthTask = null;
-//			showProgress(false);
-//		}
-//	}
-//}

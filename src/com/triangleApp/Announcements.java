@@ -1,7 +1,5 @@
 package com.triangleApp;
 
-import com.triangleApp.R;
-
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;

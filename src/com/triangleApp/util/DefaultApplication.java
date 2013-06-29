@@ -3,6 +3,7 @@ package com.triangleApp.util;
 import android.app.Application;
 
 import com.parse.Parse;
+import com.parse.ParseAnalytics;
 
 public class DefaultApplication extends Application{
 	

@@ -37,6 +37,7 @@
             android:windowSoftInputMode="adjustResize|stateVisible" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -71,6 +72,7 @@
             android:name="com.triangleApp.QuickEventResponses"
             android:label="@string/title_activity_quick_event_responses" >
         </activity>
+
     </application>
 
 </manifest>
